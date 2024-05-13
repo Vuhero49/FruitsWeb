@@ -1,0 +1,63 @@
+﻿@model Company
+
+@{
+	ViewData["Title"] = "Update Company";
+}
+
+<div class="row text">
+	<div class="col-md-8 offset-2">
+        @if (TempData["SuccessMessage"] != null)
+        {
+            <div class="alert alert-success">
+                @TempData["SuccessMessage"]
+            </div>
+        }
+		<p>
+			<h1 class="text-center">Update Company</h1>
+		</p>
+        <div class="row">
+            <div class="col-md-8 offset-2">
+                <form asp-action="Edit">
+                    <div asp-validation-summary="ModelOnly" class="text-danger"></div>
+                        <div class="form-group text-center">
+                        <img id="ProfilePicturePreview" class="border-info rounded-circle" style="max-width: 150px" />
+                        </div>
+                        <div class="form-group">
+                            <label asp-for="ProfilePicture" class="control-label"></label>
+                            <input asp-for="ProfilePicture" class="form-control" />
+                            <span asp-validation-for="ProfilePicture" class="text-danger"></span>
+                        </div>
+                        <div class="form-group">
+                            <label asp-for="FullName" class="control-label"></label>
+                            <input asp-for="FullName" class="form-control" />
+                            <span asp-validation-for="FullName" class="text-danger"></span>
+                        </div>
+                        <div class="form-group">
+                            <label asp-for="Bio" class="control-label"></label>
+                            <input asp-for="Bio" class="form-control" />
+                            <span asp-validation-for="Bio" class="text-danger"></span>
+                        </div>
+
+                        <div class="form-group d-flex justify-content-between mt-2">
+                            <input type="submit" value=" Update" class="btn btn-outline-success" />
+                            <a class="btn btn-outline-secondary" asp-action="Index"> Show All</a>
+                        </div>
+                </form>
+            </div>
+        </div>
+	</div>
+</div>
+
+@section Scripts{
+	<script>
+        $(document).ready(function () {
+            var output = document.getElementById('ProfilePicturePreview');
+            output.src = $("#ProfilePicture").val();
+        })
+
+		$("#ProfilePicture").on("change", function () {
+			var output = document.getElementById('ProfilePicturePreview');
+			output.src = $(this).val();
+		})
+	</script>
+}

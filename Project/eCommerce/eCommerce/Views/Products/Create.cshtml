@@ -1,0 +1,99 @@
+﻿@model NewProductVM;
+@using eCommerce.Data;
+@using eCommerce.Data.Enum;
+@using eCommerce.Data.ViewModels;
+
+@{
+    ViewData["Title"] = "Create a new movie";
+}
+
+<div class="row">
+    <div class="col-md-8 offset-2">
+        <p>
+            <h4 class="text-center">CREATE A NEW PRODUCT</h4>
+        </p>
+
+        <div class="row">
+            <div class="col-md-8 offset-2">
+                <form asp-action="Create">
+                    <div asp-validation-summary="ModelOnly" class="text-danger"></div>
+
+                    <div class="row">
+                        <div class="col-md-6">
+                            <div class="form-group">
+                                <label asp-for="Name" class="control-label">Product Name</label>
+                                <input asp-for="Name" class="form-control" />
+                                <span asp-validation-for="Name" class="text-danger"></span>
+                            </div>
+                            <div class="form-group">
+                                <label asp-for="StartDate" class="control-label">Product Start Date</label>
+                                <input asp-for="StartDate" type="date" class="form-control" />
+                                <span asp-validation-for="StartDate" class="text-danger"></span>
+                            </div>
+                            <div class="form-group">
+                                <label asp-for="EndDate" class="control-label">Product End Date</label>
+                                <input asp-for="EndDate" type="date" class="form-control" />
+                                <span asp-validation-for="EndDate" class="text-danger"></span>
+                            </div>
+                            <div class="form-group">
+                                <label asp-for="Price" class="control-label">Price in $</label>
+                                <input asp-for="Price" type="number" class="form-control" />
+                                <span asp-validation-for="Price" class="text-danger"></span>
+                            </div>
+                            <div class="form-group">
+                                <label asp-for="ImageURL" class="control-label">Product Poster URL</label>
+                                <input asp-for="ImageURL" class="form-control" />
+                                <span asp-validation-for="ImageURL" class="text-danger"></span>
+                            </div>
+                        </div>
+                        <div class="col-md-6">
+                            <div class="form-group">
+                                <label asp-for="StoreId" class="control-label">Select a Store</label>
+                                <select asp-for="StoreId" class="form-control" asp-items="ViewBag.Stores"></select>
+                                <span asp-validation-for="StoreId" class="text-danger"></span>
+                            </div>
+                            <div class="form-group">
+                                <label asp-for="ProductCategory" class="control-label">Select a Category</label>
+                                <select asp-for="ProductCategory" class="form-control" asp-items="Html.GetEnumSelectList<ProductCategory>()"></select>
+                                <span asp-validation-for="ProductCategory" class="text-danger"></span>
+                            </div>
+                            <div class="form-group">
+                                <label asp-for="CityId" class="control-label">Select a City</label>
+                                <select asp-for="CityId" class="form-control" asp-items="ViewBag.Cites"></select>
+                                <span asp-validation-for="CityId" class="text-danger"></span>
+                            </div>
+                            <div class="form-group">
+                                <label asp-for="CompanyIds" class="control-label">Select a Company(s)</label>
+                                <select asp-for="CompanyIds" class="form-control" asp-items="ViewBag.Companies" multiple></select>
+                                <span asp-validation-for="CompanyIds" class="text-danger"></span>
+                            </div>
+                        </div>
+                        <div class="col-md-12">
+                            <div class="form-group">
+                                <label asp-for="Description" class="control-label">Product Description</label>
+                                <textarea asp-for="Description" class="form-control"></textarea>
+                                <span asp-validation-for="Description" class="text-danger"></span>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="form-group d-flex justify-content-between"> 
+                        <input type="submit" value="Create" class="btn btn-success" />
+                        <a class="btn btn-outline-secondary" asp-action="Index">Show all</a>
+                    </div>
+
+                </form>
+
+            </div>
+        </div>
+
+    </div>
+</div>
+
+@section Scripts{
+    <script>
+        $("#ImageURL").on("change", function () {
+            var output = document.getElementById("#ImageUrlPreview");
+            output.src = $(this).val();
+        })
+    </script>
+}

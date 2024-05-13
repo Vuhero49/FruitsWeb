@@ -1,0 +1,109 @@
+﻿<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>@ViewData["Title"] - Shoes</title>
+    <link rel="stylesheet" href="~/lib/bootstrap/dist/css/bootstrap.min.css" />
+    <link rel="stylesheet" href="~/css/site.css" asp-append-version="true" />
+    <link rel="stylesheet" href="~/eCommerce.styles.css" asp-append-version="true" />
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.1/font/bootstrap-icons.css">
+</head>
+<body>
+    <header>
+
+        <nav class="navbar navbar-expand-sm navbar-toggleable-sm navbar-light bg-white border-bottom box-shadow mb-3">
+            <div class="container-fluid">
+                <a class="navbar-brand" asp-controller="Products" asp-action="Index">Shoes</a> 
+                <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target=".navbar-collapse" aria-controls="navbarSupportedContent"
+                        aria-expanded="false" aria-label="Toggle navigation">
+                    <span class="navbar-toggler-icon"></span>
+                </button>
+                <div class="navbar-collapse collapse">
+                    <ul class="navbar-nav flex-grow-1">
+                        <li class="navbar-nav flex-grow-1">
+                            <a class="nav-link text-dark" asp-area="" asp-controller="Products" asp-action="Index"><i class="badge-info bi-bag"></i> Products</a>
+                            <div class="dropdown">
+                                <button class="btn btn-outline-secondary dropdown-toggle" type="button" id="categoryDropdown" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                                    @(ViewBag.SelectedCategory == null ? "All Categories" : ViewBag.SelectedCategory.ToString())
+                                </button>
+                                <div class="dropdown-menu" aria-labelledby="categoryDropdown">
+                                    <a class="dropdown-item" asp-controller="Products" asp-action="Index">All Categories</a>
+                                    @foreach (var category in ViewBag.Categories ?? Enumerable.Empty<string>())
+                                    {
+                                        <a class="dropdown-item" asp-controller="Products" asp-action="Index" asp-route-category="@category">@category</a>
+                                    }
+                                </div>
+                            </div>
+                        </li>
+                        
+
+                        @if(User.Identity.IsAuthenticated && User.IsInRole("Admin"))
+                        {
+                            <li class="nav-item dropdown m1-auto">
+                                <a class="nav-link dropdown-toggle" href="#" id="navbarDropdown" role="button" data-bs-toggle="dropdown"
+                                   aria-haspopup="true" aria-expanded="false">
+                                    <i class="bi bi-gear"></i> Management
+                                </a>
+
+                                <div class="dropdown-menu" aria-labelledby="navbarDropdown">
+                                    <a class="dropdown-item" asp-controller="Stores" asp-action="Index"> <i class="bi bi-shop"></i> Stores</a>
+                                    <a class="dropdown-item" asp-controller="Companies" asp-action="Index"> <i class="bi bi-person-square"></i> Companies</a>
+                                    <a class="dropdown-item" asp-controller="Cities" asp-action="Index"> <i class="bi bi-building"></i> Cities</a>
+                                </div>
+                            </li>
+                        }
+                        
+                    </ul>
+
+                    <form asp-controller="Products" asp-action="Filter" method="get">
+                        <div class="input-group">
+                            <input type="text" class="form-control" name="searchString" placeholder="Search...">
+                            <div class="input-group-append">
+                                <button class="btn btn-outline-secondary" type="submit">Search</button>
+                            </div>
+                        </div>
+                    </form>
+                    <ul class="navbar-nav">
+                        @await Component.InvokeAsync("ShoppingCartSummary")
+                    </ul>
+
+                    <partial name="_Identity.cshtml" />
+                </div>
+            </div>
+        </nav>
+    </header>
+    <div class="container-fluid">
+        <main role="main" class="pb-3">
+            @RenderBody()
+        </main>
+    </div>
+
+    <footer class="border-top footer text-muted">
+        <div class="container">
+            &copy; 2023 - eCommerce
+        </div>
+    </footer>
+    <script src="~/lib/jquery/dist/jquery.min.js"></script>
+    <script src="~/lib/bootstrap/dist/js/bootstrap.bundle.min.js"></script>
+    <script src="~/js/site.js" asp-append-version="true"></script>
+    @await RenderSectionAsync("Scripts", required: false)
+</body>
+</html>
+<script>
+    $(document).ready(function () {
+        $(".navbar-toggler").click(function () {
+            $(".navbar-collapse").toggleClass("show");
+        });
+
+        $("#categoryDropdown").click(function () {
+            $(".dropdown-menu").toggleClass("show");
+        });
+
+        $(".dropdown-item").click(function () {
+            var selectedCategory = $(this).text();
+            $("#categoryDropdown").text(selectedCategory);
+            $(".dropdown-menu").removeClass("show");
+        });
+    });
+</script>

@@ -1,0 +1,58 @@
+﻿@model List<Order>
+
+@{
+    ViewData["Title"] = "All orders";
+}
+
+<div class="row">
+    <div class="col-md-8 offset-2">
+        <p>
+            <h4 class="text-center">LIST OF YOUR ALL ORDERS</h4>
+        </p>
+
+        <table class="table">
+            <thead>
+                <tr>
+                    <th class="text-center">Full Name</th>
+                    <th class="text-center">Email</th>
+                    <th class="text-center">Items</th>
+                    <th class="text-center">Total</th>
+                    <th class="text-center">Actions</th> <!-- New column for delete button -->
+                </tr>
+            </thead>
+            <tbody>
+                @foreach (var order in Model)
+                {
+                    <tr>
+                        <td class="align-middle text-center">@order.User.FullName</td>
+                        <td class="align-middle text-center">@order.User.Email</td>
+                        <td class="align-middle text-center">
+                            <ul style="list-style-type:none">
+                                @foreach (var item in order.OrderItems)
+                                {
+                                    <li>
+                                        <div class="alert alert-info" role="alert">
+                                            <span class="badge bg-success">@item.Amount</span> @item.Product.Name
+                                        </div>
+                                    </li>
+                                }
+                            </ul>
+                        </td>
+                        <td class="align-middle text-center">
+                            @order.OrderItems.Select(m => m.Product.Price * m.Amount).Sum().ToString("c")
+                        </td>
+                        <td class="align-middle text-center">
+                            @if (User.IsInRole("Admin"))
+                            {
+                                <!-- Display delete button only for admin users -->
+                                <form asp-action="DeleteOrder" asp-route-id="@order.Id" method="post">
+                                    <button type="submit" class="btn btn-success">Confirm</button>
+                                </form>
+                            }
+                        </td>
+                    </tr>
+                }
+            </tbody>
+        </table>
+    </div>
+</div>
